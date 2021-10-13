@@ -3,18 +3,19 @@
 
 # Table of contents
 
-## A. Leaflet challenge
+## A. Leaflet Challenge
 
 1. Leaflet-Step-1
-    1. 
-       1. 
-       2. 
-       3. 
+    1. static
+       1. css
+          1. style 
+       2. js
+          1. config
+          2. logic
+    2. index
 2. Leaflet-Step-2
-3. 
-4. 
-5. License
-6. ReadMe
+3. License
+4. ReadMe
 
 -----------
 
