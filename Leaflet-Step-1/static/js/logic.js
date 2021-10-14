@@ -11,7 +11,7 @@ function markerSize(circle) {
     return circle * 5;
 }
 
-// Create a loop to determine marker color
+// Create a clause to determine marker color
 function chooseColor(depth) {
     if (depth < 10) {
         return "green"
