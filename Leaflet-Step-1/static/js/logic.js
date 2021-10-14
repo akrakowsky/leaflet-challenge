@@ -42,7 +42,7 @@ function createFeatures(earthquakeData) {
             return L.circleMarker(latlng);
         },
         // Add color and size to each marker
-        stle: function (feature) {
+        style: function (feature) {
             return {
                 fillColor: chooseColor(feature.properties.depth),
                 fillOpacity: 1,
@@ -52,7 +52,7 @@ function createFeatures(earthquakeData) {
             }
         },
         // Add to each marker
-        onEachFeature: on EachFeature
+        onEachFeature: onEachFeature
     });
     // Create map
     createMap(earthquakes);
@@ -99,23 +99,24 @@ function createMap(earthquakes) {
     var legend = L.control({ position: "bottomright" });
     console.log(legend);
     legend.onAdd = function() {
-        var div = L.
-    }
-
-}
-
-// Adding a tile layer (the background map image) to our map:
-// We use the addTo() method to add objects to our map.
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(myMap);
-  
-// Add earthquake data
-d3.json(url).then(function(data) {
-    console.log(data)
-    // Create a loop
-    for (var i = 0; i < data.features.length; i++){
-        // Find the coordinate for each earthquake
-        coords = [data.features[i].geometry.coordinates[1], data.features[i].geometry.coordinates[0]]
-    }
-});
+        var div = L.DomUtil.create("div", "info legend");
+        var depth = ['-10-10', '10-30', '30-50', '50-70', '70-90', '90+'];
+        var colors = [
+                'green',
+                'limegreen',
+                'yellow',
+                'orange',
+                'red',
+                'darkred'
+                ];
+            var labels = [];
+            // Create a loop for the depths
+            depth.forEach(function(depth, index){
+                labels.push("<div class = 'row'><li style=\"background-color: " + colors[index] +  "; width: 20px"+ "; height: 15px" + "\"></li>" + "<li>" + depth + "</li></div>");
+            })
+          
+            div.innerHTML += "<ul>" + labels.join("") +"</ul>";
+            return div;
+    };
+    legend.addTo(myMap);
+};
