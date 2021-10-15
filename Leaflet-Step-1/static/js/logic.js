@@ -3,6 +3,7 @@ var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.g
 
 // Add the earthquake data
 d3.json(url).then(function(data) {
+    console.log(data)
     createFeatures(data.features);
 });
 
@@ -34,7 +35,7 @@ function chooseColor(depth) {
 // Create the pop-up
 function createFeatures(earthquakeData) {
     function onEachFeature(feature, layer) {
-        layer.bindPopup("Magnitude:" + feature.properties.mag + "<br>Depth:" + feature.properties.depth + "<br>Location:" + feature.properties.place + "<br>Date:" + new Date(feature.properties.time))
+        layer.bindPopup("Magnitude:" + feature.properties.mag + "<br>Depth:" + feature.geometry.coordinates[2] + "<br>Location:" + feature.properties.place + "<br>Date:" + new Date(feature.properties.time))
     }
     var earthquakes = L.geoJSON(earthquakeData, {
         // Add marker
@@ -44,7 +45,8 @@ function createFeatures(earthquakeData) {
         // Add color and size to each marker
         style: function (feature) {
             return {
-                fillColor: chooseColor(feature.properties.depth),
+                color: 'black',
+                fillColor: chooseColor(feature.geometry.coordinates[2]),
                 fillOpacity: 1,
                 weight: 1,
                 radius: markerSize(feature.properties.mag),
@@ -100,7 +102,7 @@ function createMap(earthquakes) {
     console.log(legend);
     legend.onAdd = function() {
         var div = L.DomUtil.create("div", "info legend");
-        var depth = ['-10-10', '10-30', '30-50', '50-70', '70-90', '90+'];
+        var grades = ['-10-10', '10-30', '30-50', '50-70', '70-90', '90+'];
         var colors = [
                 'green',
                 'limegreen',
@@ -111,8 +113,8 @@ function createMap(earthquakes) {
                 ];
             var labels = [];
             // Create a loop for the depths
-            depth.forEach(function(depth, index){
-                labels.push("<div class = 'row'><li style=\"background-color: " + colors[index] +  "; width: 20px"+ "; height: 15px" + "\"></li>" + "<li>" + depth + "</li></div>");
+            grades.forEach(function(grade, index){
+                labels.push("<div class = 'row'><li style=\"background-color: " + colors[index] +  "; width: 20px"+ "; height: 15px" + "\"></li>" + "<li>" + grade + "</li></div>");
             })
           
             div.innerHTML += "<ul>" + labels.join("") +"</ul>";
