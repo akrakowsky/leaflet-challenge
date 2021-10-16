@@ -61,7 +61,10 @@ function createFeatures(earthquakeData) {
 }
 
 // Create the map layer
+// Create two separate layer groups: one for the earthquakes and another for the tectonic plates.
+var earthquakes = L.layerGroup(earthquakes)
 function createMap(earthquakes) {
+    var tectonicPlates = new L.LayerGroup(); 
     // Create light layer
     var lightMap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
         attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
@@ -103,19 +106,32 @@ function createMap(earthquakes) {
 
     // Create an overlay map for the markers
     var overlayMaps = {
-        Earthquakes: earthquakes
+        Earthquakes: earthquakes,
+        Plates: tectonicPlates
     };
 
     var myMap = L.map("map", {
         center: [38.58, -121.49],
         zoom: 5,
-        layers: [topo, earthquakes]
+        layers: [topo, earthquakes, tectonicPlates]
       });
     
     // Create layer control
     L.control.layers(baseMaps, overlayMaps, {
         collapsed: false
     }).addTo(myMap);
+
+    // Get plate data
+    var platesURL = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json"
+      d3.json(platesURL, data => {
+        // console.log(data)
+        L.geoJson(data, {
+          style: function(features) {
+            return {color: "orange",
+            weight: 2
+          }}
+        }).addTo(tectonicPlates)
+      });
 
     // Create a legend in lower right corner
     var legend = L.control({ position: "bottomright" });
