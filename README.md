@@ -4,6 +4,7 @@
 # Table of contents
 
 ## A. Leaflet Challenge
+Create a map using Leaflet that plots all of the earthquakes from your data set based on their longitude and latitude
 
 1. Leaflet-Step-1
     1. static
